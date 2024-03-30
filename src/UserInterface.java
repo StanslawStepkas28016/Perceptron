@@ -7,12 +7,13 @@ public class UserInterface {
         final String trainSetPath = args[1]; // Zbiór treningowy.
         final String testSetPath = args[2]; // Zbiór testowy.
 
-        // Logika biznesowa.
+        // Trenowanie na zbiorze trainSet.
         Trainer trainer = new Trainer(); // Obiekt trainer.
         final List<String> trainSet = trainer.readSet(trainSetPath); // Przeczytanie pliku trainSet.
         final Integer inputCount = trainer.getInputCount(trainSet); // Ilość danych wewnątrz pojedyńczego wektora z trainSet.
-        System.out.println(inputCount);
 
+        final Perceptron perceptron = new Perceptron(inputCount, a);
+        
 
     }
 }

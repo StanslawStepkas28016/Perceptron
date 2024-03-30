@@ -4,8 +4,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class Trainer {
-    private Integer inputCount;
-
+    /* Metoda czyta plik readSet/testSet. */
     public List<String> readSet(String trainSetPath) {
         List<String> strings = null;
 
@@ -18,9 +17,10 @@ public class Trainer {
         return strings;
     }
 
-    /* Metoda zakłada, że dane oddzielone są ";" (w konwencji pliku .csv). */
+    /* Metoda zakłada, że dane oddzielone są ";" (w konwencji pliku .csv). Dodatkowo zakładamy, że dana
+     * wynikowa/oczekiwana w przeczytanym pliku jest zawsze innego typu niż numeryczna. */
     public Integer getInputCount(List<String> strings) {
-        final String[] split = strings.get(0).split(";");
+        final String[] split = strings.getFirst().split(";");
 
         int inputCount = 0;
         for (String s : split) {
@@ -31,6 +31,4 @@ public class Trainer {
 
         return inputCount;
     }
-
-
 }
