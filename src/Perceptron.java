@@ -3,7 +3,7 @@ import java.util.Random;
 public class Perceptron {
     private final Integer inputSize;
     private final Double learnRate;
-    private double[] weights;
+    public double[] weights;
 
     public Perceptron(Integer inputSize, Double learnRate) {
         this.inputSize = inputSize;
@@ -24,7 +24,6 @@ public class Perceptron {
     }
 
     /* Metoda służy do zastosowania reguły DELTA. */
-    public void deltaLearn() {
-
+    public void deltaRule() {
     }
 }
