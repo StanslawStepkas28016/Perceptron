@@ -45,7 +45,7 @@ public class Trainer {
         }
 
         if (set.size() != 2) {
-            System.err.println(STR."Class count can only be *2* for one perceptron! It is currently \{set.size()}");
+            System.err.println(STR."Class count, can only be *2* for one perceptron! It is currently \{set.size()}!");
             return;
         } else {
             final List<String> list = set.stream().toList();
