@@ -37,22 +37,7 @@ public class Trainer {
     public void train(List<String> trainSet, Perceptron perceptron) {
         // Zamiana etykiet na cyfry (mamy tylko dwie klasy, więc zakładamy,
         // że etykiety to 0 lub 1). Zamiana dzieje się na zasadzie "śledzenia" poprzednich etykiet.
-        HashSet<String> set = new HashSet<>();
-
-        for (String string : trainSet) {
-            final String[] split = string.split(";");
-            set.add(split[split.length - 1]);
-        }
-
-        if (set.size() != 2) {
-            System.err.println(STR."Class count, can only be *2* for one perceptron! It is currently \{set.size()}!");
-            return;
-        } else {
-            final List<String> list = set.stream().toList();
-            labelToIntegerMap = new HashMap<>();
-            labelToIntegerMap.put(list.get(0), 0);
-            labelToIntegerMap.put(list.get(1), 1);
-        }
+        labelsToIntegerStrings(trainSet);
 
         // Umieszczenie wektorów wraz z etykietami w trainMap.
         HashMap<double[], Integer> trainMap = new HashMap<>();
@@ -70,8 +55,40 @@ public class Trainer {
             trainMap.put(vector, labelToIntegerMap.get(label));
         }
 
+        // Obliczenie wyjścia na podstawie aktualnych wag oraz następującej
+        // funkcji wyjścia (y >= 0 -> net = 1, y < 0 -> net = 0), wraz ze
+        // sprawdzeniem zgodności wyjścia i przeprowadzeniem reguły Delta.
         for (Map.Entry<double[], Integer> entry : trainMap.entrySet()) {
-            System.out.println(STR."\{Arrays.toString(entry.getKey())} \{entry.getValue()}");
+            // Iloczyn wektorowy.
+            double y = 0;
+            for (int i = 0; i < entry.getKey().length; i++) {
+                y += (entry.getKey()[i] * perceptron.weights[i]);
+            }
+            y -= perceptron.tVal;
+
+            // Sprawdzenie, czy wymagane jest użycie reguły delta.
+            int net = y >= 0 ? 1 : 0;
+            if (net != entry.getValue()) {
+                perceptron.deltaRule(net, entry.getValue(), entry.getKey());
+            }
+        }
+    }
+
+    private void labelsToIntegerStrings(List<String> trainSet) {
+        HashSet<String> set = new HashSet<>();
+
+        for (String string : trainSet) {
+            final String[] split = string.split(";");
+            set.add(split[split.length - 1]);
+        }
+
+        if (set.size() != 2) {
+            System.err.println(STR."Class count, can only be *2* for one perceptron! It is currently \{set.size()}!");
+        } else {
+            final List<String> list = set.stream().toList();
+            labelToIntegerMap = new HashMap<>();
+            labelToIntegerMap.put(list.get(0), 0);
+            labelToIntegerMap.put(list.get(1), 1);
         }
     }
 }
