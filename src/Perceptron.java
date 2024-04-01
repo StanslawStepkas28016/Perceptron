@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Random;
 
 public class Perceptron {
@@ -21,13 +22,13 @@ public class Perceptron {
     }
 
     /* Metoda służy do obliczenia wyjścia y perceptronu. */
-    public void compute() {
+    public void compute(List<String> testSet) {
 
     }
 
     /* Metoda służy do zastosowania reguły DELTA. */
     public void deltaRule(Integer receivedValue, Integer expectedValue, double[] inputVector) {
-        final double[] oldWeights = weights;
+        double[] oldWeights = weights;
         double[] newWeights = new double[inputSize];
 
         // Prawa część wzoru W’=W+(d-y)𝛼X, konkretnie (d-y)𝛼X.
@@ -41,5 +42,8 @@ public class Perceptron {
 
         // Wyliczenie nowego t (t’= t -(d-y)𝛼).
         tVal = tVal - (expectedValue - receivedValue) * learnRate;
+
+        // Inicjalizacja pola weights nowym wektorem wag.
+        weights = newWeights;
     }
 }

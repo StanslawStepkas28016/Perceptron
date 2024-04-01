@@ -6,19 +6,6 @@ import java.util.*;
 public class Trainer {
     private HashMap<String, Integer> labelToIntegerMap;
 
-    /* Metoda czyta plik readSet/testSet. */
-    public List<String> readSet(String trainSetPath) {
-        List<String> strings = null;
-
-        try {
-            strings = Files.readAllLines(Path.of(trainSetPath));
-        } catch (IOException e) {
-            System.err.println(STR."Exception while reading the trainSetFile, at \{trainSetPath}");
-        }
-
-        return strings;
-    }
-
     /* Metoda zakłada, że dane oddzielone są ";" (w konwencji pliku .csv). Dodatkowo zakładamy, że dana
      * wynikowa/oczekiwana w przeczytanym pliku jest zawsze innego typu niż numeryczna. */
     public Integer getInputCount(List<String> dataSet) {
@@ -74,6 +61,8 @@ public class Trainer {
         }
     }
 
+    /* Metoda zamienia etykiety (wyjścia, przy procesie uczenia
+     * perceptronu), na bity wyjścia perceptronu unipolarnego. */
     private void labelsToIntegerStrings(List<String> trainSet) {
         HashSet<String> set = new HashSet<>();
 
