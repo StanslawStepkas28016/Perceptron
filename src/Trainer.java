@@ -1,6 +1,3 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 
 public class Trainer {
@@ -22,25 +19,8 @@ public class Trainer {
     }
 
     public void train(List<String> trainSet, Perceptron perceptron) {
-        // Zamiana etykiet na cyfry (mamy tylko dwie klasy, więc zakładamy,
-        // że etykiety to 0 lub 1). Zamiana dzieje się na zasadzie "śledzenia" poprzednich etykiet.
-        labelsToIntegerStrings(trainSet);
-
-        // Umieszczenie wektorów wraz z etykietami w trainMap.
-        HashMap<double[], Integer> trainMap = new HashMap<>();
-
-        for (String string : trainSet) {
-            final String[] split = string.split(";");
-
-            double[] vector = new double[split.length - 1];
-            final String label = split[split.length - 1];
-
-            for (int i = 0; i < split.length - 1; i++) {
-                vector[i] = Double.parseDouble(split[i]);
-            }
-
-            trainMap.put(vector, labelToIntegerMap.get(label));
-        }
+        // Przetworzenie trainSet na mapę z etykietami 0 lub 1 (perceptron unipolarny).
+        final HashMap<double[], Integer> trainMap = getLabeledMap(trainSet);
 
         // Obliczenie wyjścia na podstawie aktualnych wag oraz następującej
         // funkcji wyjścia (y >= 0 -> net = 1, y < 0 -> net = 0), wraz ze
@@ -59,6 +39,32 @@ public class Trainer {
                 perceptron.deltaRule(net, entry.getValue(), entry.getKey());
             }
         }
+    }
+
+    /* Metoda zwraca mapę zawierającą tablicę double (dane wektora) jako klucz,
+     * razem z przetworzonymi etykietami (na 0, bądź 1). */
+    public HashMap<double[], Integer> getLabeledMap(List<String> anySet) {
+        // Zamiana etykiet na cyfry (mamy tylko dwie klasy, więc zakładamy,
+        // że etykiety to 0 lub 1). Zamiana dzieje się na zasadzie "śledzenia" poprzednich etykiet.
+        labelsToIntegerStrings(anySet);
+
+        // Umieszczenie wektorów wraz z etykietami w trainMap.
+        HashMap<double[], Integer> labeledMap = new HashMap<>();
+
+        for (String string : anySet) {
+            final String[] split = string.split(";");
+
+            double[] vector = new double[split.length - 1];
+            final String label = split[split.length - 1];
+
+            for (int i = 0; i < split.length - 1; i++) {
+                vector[i] = Double.parseDouble(split[i]);
+            }
+
+            labeledMap.put(vector, labelToIntegerMap.get(label));
+        }
+
+        return labeledMap;
     }
 
     /* Metoda zamienia etykiety (wyjścia, przy procesie uczenia

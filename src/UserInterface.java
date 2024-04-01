@@ -10,13 +10,14 @@ public class UserInterface {
         // Trenowanie na zbiorze trainSet.
         Trainer trainer = new Trainer(); // Obiekt trainer.
         final List<String> trainSet = IOUtility.readSet(trainSetPath); // Przeczytanie pliku trainSet.
-        final Integer inputCount = trainer.getInputCount(trainSet); // Ilość danych wewnątrz pojedyńczego wektora z trainSet.
-        final Perceptron perceptron = new Perceptron(inputCount, learnRate); // Obiekt perceptron.
+        final Integer dataVectorSize = trainer.getInputCount(trainSet); // Ilość danych wewnątrz pojedyńczego wektora z trainSet.
+        final Perceptron perceptron = new Perceptron(dataVectorSize, learnRate); // Obiekt perceptron.
         trainer.train(trainSet, perceptron); // Przeprowadzenie trenowania.
 
         // Przeprowadzenie klasyfikacji.
-        final List<String> strings = IOUtility.readSet(testSetPath);
-
+        final List<String> testSet = IOUtility.readSet(testSetPath);
+        perceptron.compute(testSet, trainer);
+        System.out.println(perceptron.getAccuracy());
 
     }
 }
