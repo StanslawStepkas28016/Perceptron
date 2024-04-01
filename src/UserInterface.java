@@ -17,6 +17,6 @@ public class UserInterface {
         // Przeprowadzenie klasyfikacji.
         final List<String> testSet = IOUtility.readSet(testSetPath);
         perceptron.compute(testSet, trainer);
-        perceptron.getAccuracy();
+        perceptron.displayAccuracy();
     }
 }

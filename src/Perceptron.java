@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.Stream;
 
 public class Perceptron {
     private final Integer dataVectorSize;
@@ -83,7 +82,7 @@ public class Perceptron {
         weights = newWeights;
     }
 
-    public void getAccuracy() {
+    public void displayAccuracy() {
         System.out.println(STR."Accuracy (for all) : \{(hitOne + hitZero) / (double) totalDataSize}.");
         System.out.println(STR."Accuracy (for 0) : \{hitZero / (double) totalZeroDataSize}.");
         System.out.println(STR."Accuracy (for 1) : \{hitOne / (double) totalOneDataSize}.");
