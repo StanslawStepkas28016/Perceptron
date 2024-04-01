@@ -1,10 +1,14 @@
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Perceptron {
     private final Integer dataVectorSize;
     public final Double learnRate;
     public Double tVal;
-    private Integer hit = 0;
+    private Integer hitZero = 0;
+    private Integer hitOne = 0;
+    private Integer totalZeroDataSize = 0;
+    private Integer totalOneDataSize = 0;
     private Integer totalDataSize = 0;
     public double[] weights;
 
@@ -31,6 +35,12 @@ public class Perceptron {
             double net = 0.0;
             final double[] data = entry.getKey();
 
+            if (entry.getValue() == 1) {
+                totalOneDataSize += 1;
+            } else {
+                totalZeroDataSize += 1;
+            }
+
             for (int i = 0; i < data.length; i++) {
                 net += data[i] * weights[i];
             }
@@ -39,14 +49,17 @@ public class Perceptron {
             int y = net >= 0 ? 1 : 0;
 
             if (y == entry.getValue()) {
-                hit += 1;
+                if (y == 1) {
+                    hitOne += 1;
+                } else {
+                    hitZero += 1;
+                }
             }
 
             totalDataSize = labeledMap.size();
 
             System.out.println(STR."\{Arrays.toString(entry.getKey())}, expected : \{entry.getValue()}, computed : \{y}");
         }
-
     }
 
     /* Metoda służy do zastosowania reguły DELTA. */
@@ -54,7 +67,7 @@ public class Perceptron {
         double[] oldWeights = weights;
         double[] newWeights = new double[dataVectorSize];
 
-        // Prawa część wzoru W’=W+(d-y)𝛼X, konkretnie (d-y)𝛼X.
+        // Prawa część wzoru W’ = W + (d-y) * 𝛼 * X, konkretnie (d-y) * 𝛼 * X.
         for (int i = 0; i < inputVector.length; i++) {
             inputVector[i] = (expectedValue - receivedValue) * learnRate * inputVector[i];
         }
@@ -63,14 +76,23 @@ public class Perceptron {
             newWeights[i] = inputVector[i] + oldWeights[i];
         }
 
-        // Wyliczenie nowego t (t’= t -(d-y)𝛼).
+        // Wyliczenie nowego t (t’= t - (d-y) * 𝛼).
         tVal = tVal - (expectedValue - receivedValue) * learnRate;
 
         // Inicjalizacja pola weights nowym wektorem wag.
         weights = newWeights;
     }
 
-    public Double getAccuracy() {
-        return hit / (double) totalDataSize;
+    public void getAccuracy() {
+        System.out.println(STR."Accuracy (for all) : \{(hitOne + hitZero) / (double) totalDataSize}.");
+        System.out.println(STR."Accuracy (for 0) : \{hitZero / (double) totalZeroDataSize}.");
+        System.out.println(STR."Accuracy (for 1) : \{hitOne / (double) totalOneDataSize}.");
+
+        // Reset danych, do kolejnych obliczeń, przy zapętleniu działania programu.
+        hitZero = 0;
+        hitOne = 0;
+        totalDataSize = 0;
+        totalZeroDataSize = 0;
+        totalOneDataSize = 0;
     }
 }
