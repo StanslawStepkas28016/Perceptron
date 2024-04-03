@@ -5,7 +5,7 @@ public class Trainer {
 
     public void train(List<String> trainSet, Perceptron perceptron) {
         // Przetworzenie trainSet na mapę z etykietami 0 lub 1 (perceptron unipolarny).
-        final HashMap<double[], Integer> trainMap = getLabeledMap(trainSet);
+        final HashMap<double[], Integer> trainMap = transformToLabeledMap(trainSet);
 
         // Obliczenie wyjścia na podstawie aktualnych wag oraz następującej
         // funkcji wyjścia (y >= 0 -> net = 1, y < 0 -> net = 0), wraz ze
@@ -63,7 +63,7 @@ public class Trainer {
 
     /* Metoda zwraca mapę zawierającą tablicę double (dane wektora) jako klucz,
      * razem z przetworzonymi etykietami (na 0, bądź 1). */
-    public HashMap<double[], Integer> getLabeledMap(List<String> anySet) {
+    public HashMap<double[], Integer> transformToLabeledMap(List<String> anySet) {
         // Zamiana etykiet na cyfry (mamy tylko dwie klasy, więc zakładamy,
         // że etykiety to 0 lub 1). Zamiana dzieje się na zasadzie "śledzenia" poprzednich etykiet.
         labelsToIntegerStrings(anySet);
@@ -85,5 +85,11 @@ public class Trainer {
         }
 
         return labeledMap;
+    }
+
+    /* Metoda zwraca mapę etykiet wraz z ich odpowiednikami bitowymi,
+     * dla perceptronu unipolarnego. */
+    public HashMap<String, Integer> getLabelToIntegerMap() {
+        return labelToIntegerMap;
     }
 }

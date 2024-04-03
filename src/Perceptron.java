@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Perceptron {
     private final Integer dataVectorSize;
@@ -29,7 +28,7 @@ public class Perceptron {
 
     /* Metoda służy do obliczenia wyjścia y perceptronu. */
     public void compute(List<String> testSet, Trainer utilityTrainer) {
-        final HashMap<double[], Integer> labeledMap = utilityTrainer.getLabeledMap(testSet);
+        final HashMap<double[], Integer> labeledMap = utilityTrainer.transformToLabeledMap(testSet);
 
         // Obliczenie net, razem z "transformacją" netu przez funkcję wyjścia.
         for (Map.Entry<double[], Integer> entry : labeledMap.entrySet()) {
@@ -61,6 +60,26 @@ public class Perceptron {
 
             System.out.println(STR."\{Arrays.toString(entry.getKey())}, oczekiwane : \{entry.getValue()}, obliczone : \{y}");
         }
+    }
+
+    public void computeForInputVector(String testVector, Trainer utilityTrainer) {
+        double net = 0.0;
+        final String[] split = testVector.split(";");
+        final double[] data = new double[split.length];
+
+        for (int i = 0; i < split.length; i++) {
+            data[i] = Double.parseDouble(split[i]);
+        }
+
+        for (int i = 0; i < data.length; i++) {
+            net += data[i] * weights[i];
+        }
+
+        net -= tVal;
+        int y = net >= 0 ? 1 : 0;
+
+        System.out.println(STR."Przypomnienie : \{utilityTrainer.getLabelToIntegerMap()}");
+        System.out.println(STR."\{Arrays.toString(data)}, obliczone : \{y}");
     }
 
     /* Metoda służy do zastosowania reguły DELTA. */
@@ -98,8 +117,16 @@ public class Perceptron {
     }
 
     public String getVectorFormat() {
-        List<Double> list = new ArrayList<>(Arrays.stream(weights).boxed().toList());
-        Collections.fill(list, 0.0);
-        return list.toString();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < weights.length; i++) {
+            if (i != weights.length - 1) {
+                sb.append(0.0).append(";");
+            } else {
+                sb.append(0.0);
+            }
+        }
+
+        return sb.toString();
     }
 }

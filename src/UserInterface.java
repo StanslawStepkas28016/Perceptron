@@ -1,4 +1,3 @@
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,29 +14,20 @@ public class UserInterface {
         final Integer dataVectorSize = trainer.getInputCount(trainSet); // Ilość danych wewnątrz pojedyńczego wektora z trainSet.
         final Perceptron perceptron = new Perceptron(dataVectorSize, learnRate); // Obiekt perceptron.
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in); // Wejście.
 
         do {
-            System.out.println("Dostępne opcje : ");
-            System.out.println("1. Klasyfikacja na w args train-set oraz test-set.");
-            System.out.println("2. Wprowadzenie własnego wektora do testowania.");
-            System.out.println("3. Zakończenie pracy programu.");
-
+            displayOptions();
             System.out.print("Wprowadź opcje : ");
             final int i = scanner.nextInt();
 
-            if (i == 1) {
-                trainer.train(trainSet, perceptron); // Przeprowadzenie trenowania.
-                perceptron.compute(testSet, trainer); // Przeprowadzenie klasyfikacji.
-                perceptron.displayAccuracy(); // Wyświetlenie dokładności klasyfikacji.
-            } else if (i == 2) {
-                System.out.println(STR."Obowiązujący format to : \{perceptron.getVectorFormat()}");
-                System.out.print("Wprowadź wektor : ");
-                final String vector = scanner.next();
+            // dodać boola.
+            trainer.train(trainSet, perceptron); // Przeprowadzenie trenowania.
 
-                trainer.train(trainSet, perceptron); // Przeprowadzenie trenowania.
-                perceptron.compute(Collections.singletonList(vector), trainer); // Przeprowadzenie klasyfikacji (własny wektor).
-                perceptron.displayAccuracy(); // Wyświetlenie dokładności klasyfikacji.
+            if (i == 1) {
+                argsClassification(perceptron, testSet, trainer);
+            } else if (i == 2) {
+                inputClassification(perceptron, scanner, trainer);
             } else if (i == 3) {
                 return;
             } else {
@@ -45,5 +35,28 @@ public class UserInterface {
             }
         }
         while (true);
+    }
+
+    private static void displayOptions() {
+        System.out.println("Dostępne opcje : ");
+        System.out.println("1. Klasyfikacja na w args train-set oraz test-set.");
+        System.out.println("2. Wprowadzenie własnego wektora do testowania.");
+        System.out.println("3. Zakończenie pracy programu.");
+    }
+
+    private static void inputClassification(Perceptron perceptron, Scanner scanner, Trainer utilityTrainer) {
+        System.out.println();
+        System.out.println(STR."Obowiązujący format to : \{perceptron.getVectorFormat()}");
+        System.out.print("Wprowadź wektor : ");
+        final String vector = scanner.next(); // Wejście wektora.
+        perceptron.computeForInputVector(vector, utilityTrainer); // Przeprowadzenie klasyfikacji (własny wektor).
+        System.out.println();
+    }
+
+    private static void argsClassification(Perceptron perceptron, List<String> testSet, Trainer trainer) {
+        System.out.println();
+        perceptron.compute(testSet, trainer); // Przeprowadzenie klasyfikacji.
+        perceptron.displayAccuracy(); // Wyświetlenie dokładności klasyfikacji.
+        System.out.println();
     }
 }
