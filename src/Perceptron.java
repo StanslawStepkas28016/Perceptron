@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Perceptron {
     private final Integer dataVectorSize;
@@ -20,9 +21,10 @@ public class Perceptron {
         Random random = new Random();
 
         // Inicjalizacja wektora wag, wagami z zakresu <-5,5>.
-        for (double weight : weights) {
-            weight = random.nextDouble(-5, 5);
+        for (int i = 0; i < weights.length; i++) {
+            weights[i] = random.nextDouble(-5, 5);
         }
+
     }
 
     /* Metoda służy do obliczenia wyjścia y perceptronu. */
@@ -57,7 +59,7 @@ public class Perceptron {
 
             totalDataSize = labeledMap.size();
 
-            System.out.println(STR."\{Arrays.toString(entry.getKey())}, expected : \{entry.getValue()}, computed : \{y}");
+            System.out.println(STR."\{Arrays.toString(entry.getKey())}, oczekiwane : \{entry.getValue()}, obliczone : \{y}");
         }
     }
 
@@ -83,9 +85,9 @@ public class Perceptron {
     }
 
     public void displayAccuracy() {
-        System.out.println(STR."Accuracy (for all) : \{(hitOne + hitZero) / (double) totalDataSize}.");
-        System.out.println(STR."Accuracy (for 0) : \{hitZero / (double) totalZeroDataSize}.");
-        System.out.println(STR."Accuracy (for 1) : \{hitOne / (double) totalOneDataSize}.");
+        System.out.println(STR."Dokładność (dla obu klas) : \{(hitOne + hitZero) / (double) totalDataSize}.");
+        System.out.println(STR."Accuracy (dla klasy 0) : \{hitZero / (double) totalZeroDataSize}.");
+        System.out.println(STR."Accuracy (dla klasy 1) : \{hitOne / (double) totalOneDataSize}.");
 
         // Reset danych, do kolejnych obliczeń, przy zapętleniu działania programu.
         hitZero = 0;
@@ -93,5 +95,11 @@ public class Perceptron {
         totalDataSize = 0;
         totalZeroDataSize = 0;
         totalOneDataSize = 0;
+    }
+
+    public String getVectorFormat() {
+        List<Double> list = new ArrayList<>(Arrays.stream(weights).boxed().toList());
+        Collections.fill(list, 0.0);
+        return list.toString();
     }
 }

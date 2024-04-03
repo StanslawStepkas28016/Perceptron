@@ -3,21 +3,6 @@ import java.util.*;
 public class Trainer {
     private HashMap<String, Integer> labelToIntegerMap;
 
-    /* Metoda zakłada, że dane oddzielone są ";" (w konwencji pliku .csv). Dodatkowo zakładamy, że dana
-     * wynikowa/oczekiwana w przeczytanym pliku jest zawsze innego typu niż numeryczna. */
-    public Integer getInputCount(List<String> dataSet) {
-        final String[] split = dataSet.getFirst().split(";");
-
-        int inputCount = 0;
-        for (String s : split) {
-            if (s.matches("\\d+(\\.\\d+)?")) {
-                inputCount += 1;
-            }
-        }
-
-        return inputCount;
-    }
-
     public void train(List<String> trainSet, Perceptron perceptron) {
         // Przetworzenie trainSet na mapę z etykietami 0 lub 1 (perceptron unipolarny).
         final HashMap<double[], Integer> trainMap = getLabeledMap(trainSet);
@@ -39,6 +24,41 @@ public class Trainer {
                 perceptron.deltaRule(net, entry.getValue(), entry.getKey());
             }
         }
+    }
+
+    /* Metoda zamienia etykiety (wyjścia, przy procesie uczenia
+     * perceptronu), na bity wyjścia perceptronu unipolarnego. */
+    private void labelsToIntegerStrings(List<String> trainSet) {
+        HashSet<String> set = new HashSet<>();
+
+        for (String string : trainSet) {
+            final String[] split = string.split(";");
+            set.add(split[split.length - 1]);
+        }
+
+        if (set.size() != 2) {
+            System.err.println(STR."Class count, can only be *2* for one perceptron! It is currently \{set.size()}!");
+        } else {
+            final List<String> list = set.stream().toList();
+            labelToIntegerMap = new HashMap<>();
+            labelToIntegerMap.put(list.get(0), 0);
+            labelToIntegerMap.put(list.get(1), 1);
+        }
+    }
+
+    /* Metoda zakłada, że dane oddzielone są ";" (w konwencji pliku .csv). Dodatkowo zakładamy, że dana
+     * wynikowa/oczekiwana w przeczytanym pliku jest zawsze innego typu niż numeryczna. */
+    public Integer getInputCount(List<String> dataSet) {
+        final String[] split = dataSet.getFirst().split(";");
+
+        int inputCount = 0;
+        for (String s : split) {
+            if (s.matches("\\d+(\\.\\d+)?")) {
+                inputCount += 1;
+            }
+        }
+
+        return inputCount;
     }
 
     /* Metoda zwraca mapę zawierającą tablicę double (dane wektora) jako klucz,
@@ -65,25 +85,5 @@ public class Trainer {
         }
 
         return labeledMap;
-    }
-
-    /* Metoda zamienia etykiety (wyjścia, przy procesie uczenia
-     * perceptronu), na bity wyjścia perceptronu unipolarnego. */
-    private void labelsToIntegerStrings(List<String> trainSet) {
-        HashSet<String> set = new HashSet<>();
-
-        for (String string : trainSet) {
-            final String[] split = string.split(";");
-            set.add(split[split.length - 1]);
-        }
-
-        if (set.size() != 2) {
-            System.err.println(STR."Class count, can only be *2* for one perceptron! It is currently \{set.size()}!");
-        } else {
-            final List<String> list = set.stream().toList();
-            labelToIntegerMap = new HashMap<>();
-            labelToIntegerMap.put(list.get(0), 0);
-            labelToIntegerMap.put(list.get(1), 1);
-        }
     }
 }
