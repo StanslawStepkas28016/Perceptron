@@ -3,7 +3,6 @@ import java.util.Scanner;
 
 public class UserInterface {
     public static void main(String[] args) {
-        // Pobranie danych z argumentów programu.
         final double learnRate = Double.parseDouble(args[0]); // Stała uczenia.
         final String trainSetPath = args[1]; // Zbiór treningowy.
         final String testSetPath = args[2]; // Zbiór testowy.
@@ -14,7 +13,7 @@ public class UserInterface {
         final Integer dataVectorSize = trainer.getInputCount(trainSet); // Ilość danych wewnątrz pojedyńczego wektora z trainSet.
         final Perceptron perceptron = new Perceptron(dataVectorSize, learnRate); // Obiekt perceptron.
 
-        Scanner scanner = new Scanner(System.in); // Wejście.
+        Scanner scanner = new Scanner(System.in); // Wejście (wybór opcji).
         boolean train = true;
 
         do {
@@ -41,14 +40,19 @@ public class UserInterface {
     }
 
     private static boolean nextTrain(boolean train) {
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in); // Wejście (wybór przeprowadzenia kolejnego potoku).
 
         System.out.print("Czy chcesz przeprowadzić kolejny potok nauczania? (0 - Nie, 1 - Tak) : ");
         final int nextInt = sc.nextInt();
 
-        if (nextInt == 1) {
+        if (nextInt == 0) {
+            train = true;
+        } else if (nextInt == 1) {
             train = false;
             System.out.println("Po wybraniu opcji z menu, zostanie przeprowadzony kolejny potok!");
+        } else {
+            train = false;
+            System.out.println("Wybrano niepoprawną opcję! Program wybrał opcję (0 - Nie)!");
         }
 
         System.out.println();
