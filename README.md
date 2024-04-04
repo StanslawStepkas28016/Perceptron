@@ -1,1 +1,1 @@
-Nie ma i nie bedzie.
+Projekt na przedmiot NAI - "Perceptron".
