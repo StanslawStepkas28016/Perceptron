@@ -15,17 +15,20 @@ public class UserInterface {
         final Perceptron perceptron = new Perceptron(dataVectorSize, learnRate); // Obiekt perceptron.
 
         Scanner scanner = new Scanner(System.in); // Wejście.
+        boolean train = true;
 
         do {
             displayOptions();
             System.out.print("Wprowadź opcje : ");
             final int i = scanner.nextInt();
 
-            // dodać boola.
-            trainer.train(trainSet, perceptron); // Przeprowadzenie trenowania.
+            if (train) {
+                trainer.train(trainSet, perceptron); // Przeprowadzenie trenowania.
+            }
 
             if (i == 1) {
                 argsClassification(perceptron, testSet, trainer);
+                train = nextTrain(train);
             } else if (i == 2) {
                 inputClassification(perceptron, scanner, trainer);
             } else if (i == 3) {
@@ -35,6 +38,22 @@ public class UserInterface {
             }
         }
         while (true);
+    }
+
+    private static boolean nextTrain(boolean train) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Czy chcesz przeprowadzić kolejny potok nauczania? (0 - Nie, 1 - Tak) : ");
+        final int nextInt = sc.nextInt();
+
+        if (nextInt == 1) {
+            train = false;
+            System.out.println("Po wybraniu opcji z menu, zostanie przeprowadzony kolejny potok!");
+        }
+
+        System.out.println();
+
+        return train;
     }
 
     private static void displayOptions() {
