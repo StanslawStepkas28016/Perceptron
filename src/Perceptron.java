@@ -60,6 +60,10 @@ public class Perceptron {
 
             System.out.println(STR."\{Arrays.toString(entry.getKey())}, oczekiwane : \{entry.getValue()}, obliczone : \{y}");
         }
+
+        System.out.println();
+        System.out.println(STR."Przypomnienie : \{utilityTrainer.getLabelToIntegerMap()}");
+        System.out.println();
     }
 
     public void computeForInputVector(String testVector, Trainer utilityTrainer) {
