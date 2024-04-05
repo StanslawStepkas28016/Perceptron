@@ -109,8 +109,9 @@ public class Perceptron {
 
     public void displayAccuracy() {
         System.out.println(STR."Dokładność (dla obu klas) : \{(hitOne + hitZero) / (double) totalDataSize}.");
-        System.out.println(STR."Accuracy (dla klasy 0) : \{hitZero / (double) totalZeroDataSize}.");
-        System.out.println(STR."Accuracy (dla klasy 1) : \{hitOne / (double) totalOneDataSize}.");
+        System.out.println(STR."Dokładność  (dla klasy 0) : \{hitZero / (double) totalZeroDataSize}.");
+        System.out.println(STR."Dokładność  (dla klasy 1) : \{hitOne / (double) totalOneDataSize}.");
+        System.out.println(STR."Aktualny parametr learnRate : \{learnRate}.");
 
         // Reset danych, do kolejnych obliczeń, przy zapętleniu działania programu.
         hitZero = 0;
