@@ -66,6 +66,8 @@ public class Perceptron {
         System.out.println();
     }
 
+    /* Metoda służy do wyliczenia wyjścia y perceptronu dla pojedynczego wektora,
+     * podanego przez uzytkownika. */
     public void computeForInputVector(String testVector, Trainer utilityTrainer) {
         double net = 0.0;
         final String[] split = testVector.split(";");
@@ -107,6 +109,7 @@ public class Perceptron {
         weights = newWeights;
     }
 
+    /* Metoda wyświetla dokładności klasyfikacji, resetując dane do następnych potoków.*/
     public void displayAccuracy() {
         System.out.println(STR."Dokładność (dla obu klas) : \{(hitOne + hitZero) / (double) totalDataSize}.");
         System.out.println(STR."Dokładność  (dla klasy 0) : \{hitZero / (double) totalZeroDataSize}.");
@@ -121,6 +124,7 @@ public class Perceptron {
         totalOneDataSize = 0;
     }
 
+    /* Metoda zwraca format, w jakim wyświetlone mają być dane wprowadzone przez użytkownika. */
     public String getVectorFormat() {
         StringBuilder sb = new StringBuilder();
 
