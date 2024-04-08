@@ -10,7 +10,7 @@ public class Perceptron {
     private Integer totalOneDataSize = 0;
     private Integer totalDataSize = 0;
     public double[] weights;
-
+ q qq
     public Perceptron(Integer dataVectorSize, Double learnRate) {
         this.dataVectorSize = dataVectorSize;
         this.learnRate = learnRate;
