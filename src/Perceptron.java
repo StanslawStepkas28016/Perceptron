@@ -58,7 +58,12 @@ public class Perceptron {
 
             totalDataSize = labeledMap.size();
 
-            System.out.println(STR."\{Arrays.toString(entry.getKey())}, oczekiwane : \{entry.getValue()}, obliczone : \{y}");
+            final int expectedOut = entry.getValue();
+            if (expectedOut != y) {
+                System.out.println(STR."\{Arrays.toString(data)}, oczekiwane : \{expectedOut}, obliczone : \{y} (X)");
+            } else {
+                System.out.println(STR."\{Arrays.toString(data)}, oczekiwane : \{expectedOut}, obliczone : \{y}");
+            }
         }
 
         System.out.println();
